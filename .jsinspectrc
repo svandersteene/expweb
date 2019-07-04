@@ -1,0 +1,4 @@
+{
+    "ignore": "flow-typed/npm|public|.cache|coverage|styleguide",
+    "threshold": 100
+}

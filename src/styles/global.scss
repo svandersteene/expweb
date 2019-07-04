@@ -1,0 +1,62 @@
+/**
+* Global styling
+*/
+
+@import "./reset";
+
+body {
+    font-family: Montserrat, sans-serif;
+
+    @for $i from 1 through 6 {
+        h#{$i} {
+            font-weight: bold;
+        }
+    }
+
+    a {
+        text-decoration: none;
+        color: black;
+    }
+}
+
+@keyframes pulsate {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.2);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+.home {
+    display: grid;
+    grid-gap: 2em;
+    justify-content: center;
+    justify-items: center;
+    align-content: center;
+
+    h2 {
+        font-size: 40px;
+    }
+
+    .home-img {
+        width: 70vw;
+    }
+
+    .home-pulse {
+        font-size: 24px;
+        font-weight: bold;
+        animation: pulsate 2s ease-in-out infinite;
+    }
+}
+
+@media only screen and (min-width: 26em) {
+    .home {
+        .home-img {
+            width: 40vw;
+        }
+    }
+}
