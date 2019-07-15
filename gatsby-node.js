@@ -4,7 +4,6 @@
  * See: https://www.gatsbyjs.org/docs/node-apis/
  */
 
-const path = require("path");
 const BundleAnalyzerPlugin = require("webpack-bundle-analyzer")
     .BundleAnalyzerPlugin;
 

@@ -21,13 +21,6 @@ module.exports = {
             },
         },
         {
-            resolve: "gatsby-source-filesystem",
-            options: {
-                name: "fonts",
-                path: `${__dirname}/src/fonts`,
-            },
-        },
-        {
             resolve: "gatsby-plugin-web-font-loader",
             options: {
                 custom: {
@@ -48,7 +41,7 @@ module.exports = {
                 background_color: "#ff5742",
                 theme_color: "#3b3b39",
                 display: "minimal-ui",
-                icon: "src/images/favicon.png", // This path is relative to the root of the site.
+                icon: "src/images/favicon.jpg", // This path is relative to the root of the site.
             },
         },
         // Definitly do
