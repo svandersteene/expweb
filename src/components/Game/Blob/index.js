@@ -1,14 +1,23 @@
 // @flow
 
 import React from "react";
+import { Entity } from "aframe-react";
 
 type Props = {
-    content: string,
+    color: string,
+    radius: number,
+    position: *,
 };
 
 /**
  * Blob
  */
-const Blob = ({ content }: Props) => <p>{content}</p>;
+const Blob = ({ color, radius, position: { x, y, z } }: Props) => (
+    <Entity
+        primitive="a-octahedron"
+        material={{ color, radius }}
+        position={{ x, y, z }}
+    />
+);
 
 export default Blob;

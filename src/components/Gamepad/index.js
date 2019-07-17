@@ -40,7 +40,7 @@ export default class Gamepad extends PureComponent<Props, State> {
         const { children } = this.props;
 
         if (!gamepad) {
-            return <p>let&apos;s connect a gamepad</p>;
+            return <p>Let&apos;s connect a Playstation 4 controller</p>;
         }
 
         return <Fragment>{children}</Fragment>;

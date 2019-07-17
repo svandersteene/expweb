@@ -1,6 +1,9 @@
 // @flow
 
+import "aframe";
 import React, { PureComponent } from "react";
+import World from "./World";
+import Blob from "./Blob";
 
 type Props = {};
 
@@ -27,6 +30,19 @@ export default class Game extends PureComponent<Props, State> {
         if (!hasState) {
             return <p>loading...</p>;
         }
-        return <p>loaded</p>;
+        return (
+            <World>
+                <Blob
+                    color={"grey"}
+                    radius={2}
+                    position={{ x: -5, y: -5, z: -25 }}
+                />
+                <Blob
+                    color={"blue"}
+                    radius={1}
+                    position={{ x: 5, y: 5, z: -35 }}
+                />
+            </World>
+        );
     }
 }
