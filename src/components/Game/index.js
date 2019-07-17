@@ -3,6 +3,7 @@
 import "aframe";
 import React, { PureComponent } from "react";
 import World from "./World";
+import Player from "./Player";
 import Blob from "./Blob";
 
 type Props = {};
@@ -32,6 +33,7 @@ export default class Game extends PureComponent<Props, State> {
         }
         return (
             <World>
+                <Player />
                 <Blob
                     color={"grey"}
                     radius={2}

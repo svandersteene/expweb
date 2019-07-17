@@ -17,6 +17,13 @@ const Blob = ({ color, radius, position: { x, y, z } }: Props) => (
         primitive="a-octahedron"
         material={{ color, radius }}
         position={{ x, y, z }}
+        animation={{
+            property: "rotation",
+            to: "360 360 360",
+            loop: true,
+            dur: 3000,
+            easing: "linear",
+        }}
     />
 );
 
