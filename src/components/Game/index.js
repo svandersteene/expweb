@@ -1,7 +1,7 @@
 // @flow
 
 import "aframe";
-import React, { PureComponent } from "react";
+import React, { PureComponent, type Node } from "react";
 import World from "./World";
 import Player from "./Player";
 import Blob from "./Blob";
@@ -17,13 +17,25 @@ type State = {
  */
 export default class Game extends PureComponent<Props, State> {
     state = { hasState: false };
+    blobs: Node[] = [];
 
     componentDidMount() {
         this.setState({ hasState: true });
+        this.initGame();
     }
 
     componentWillUnMount() {
         this.setState({ hasState: false });
+    }
+
+    /**
+     * INIT GAME
+     * add initial blobs to the scene
+     */
+    initGame() {
+        for (let i = 0; i < 5; i++) {
+            this.blobs && this.blobs.push(<Blob key={i} />);
+        }
     }
 
     render() {
@@ -32,18 +44,9 @@ export default class Game extends PureComponent<Props, State> {
             return <p>loading...</p>;
         }
         return (
-            <World>
+            <World id="world">
                 <Player />
-                <Blob
-                    color={"grey"}
-                    radius={2}
-                    position={{ x: -5, y: -5, z: -25 }}
-                />
-                <Blob
-                    color={"blue"}
-                    radius={1}
-                    position={{ x: 5, y: 5, z: -35 }}
-                />
+                {this.blobs}
             </World>
         );
     }

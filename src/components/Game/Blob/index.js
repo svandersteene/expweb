@@ -3,20 +3,18 @@
 import React from "react";
 import { Entity } from "aframe-react";
 
-type Props = {
-    color: string,
-    radius: number,
-    position: *,
+const randomPosition = () => {
+    return Math.floor((Math.random() - 0.5) * 20);
 };
 
 /**
  * Blob
  */
-const Blob = ({ color, radius, position: { x, y, z } }: Props) => (
+const Blob = () => (
     <Entity
         primitive="a-octahedron"
-        material={{ color, radius }}
-        position={{ x, y, z }}
+        material={{ color: "grey", radius: 1 }}
+        position={{ x: randomPosition(), y: randomPosition(), z: -100 }}
         animation={{
             property: "rotation",
             to: "360 360 360",
