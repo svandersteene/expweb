@@ -13,7 +13,7 @@ export default class Controller {
   initControls(gamepad) {
     // this.createVariableGravity();
     this.navigate(gamepad);
-    this.shoot(gamepad);
+    // this.shoot(gamepad);
     this.resetController(gamepad);
     // this.pauseGame(gamepad);
     // this.pause ? this.scene.pause() : this.scene.play();
@@ -52,11 +52,11 @@ export default class Controller {
   /**
    * Use the R1 BUTTON to destroy the blobs
    */
-  shoot(gamepad) {
-    if (gamepad.buttons[5].pressed) {
-      console.log('camera', {x: this.camera.getAttribute('position').x, y: this.camera.getAttribute('position').y});
-    }
-  }
+  //   shoot(gamepad) {
+  //     if (gamepad.buttons[5].pressed) {
+  //       console.log('camera', {x: this.camera.getAttribute('position').x, y: this.camera.getAttribute('position').y});
+  //     }
+  //   }
 
   /**
    * Use the L1 BUTTON to reset your position & rotation back to 0 0 0, in case you're completely lost
