@@ -1,7 +1,7 @@
 export default class Controller {
 
   constructor(scene, camera) {
-    this.sensitivity = 1;
+    this.sensitivity = 0.5;
     this.pause = false;
     this.scene = scene;
     this.camera = camera;
@@ -71,7 +71,7 @@ export default class Controller {
 
     // reset the gamepad's sensitivity
     if (gamepad.buttons[3].pressed) {
-      this.sensitivity = 1;
+      this.sensitivity = 0.5;
     }
   }
 
@@ -89,7 +89,7 @@ export default class Controller {
    * Change sensitivity of the controller with the UP or DOWN ARROW
    */
   changeSensitivity(gamepad) {
-    if (this.sensitivity < 2 && gamepad.buttons[12].pressed) {
+    if (this.sensitivity < 1 && gamepad.buttons[12].pressed) {
       this.sensitivity = parseFloat((this.sensitivity += 0.1).toFixed(1));
     }
     if (this.sensitivity > 0.1 && gamepad.buttons[13].pressed) {

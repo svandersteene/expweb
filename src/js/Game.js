@@ -5,12 +5,15 @@ export default class Game {
 
   constructor() {
     console.log('creating the game...');
-    this.scene = document.querySelector('.world');
+    window.addEventListener('gamepaddisconnected', () => {
+      this.disconnectedGamepad();
+    });
+    this.scene = document.querySelector('a-scene');
     this.scene.setAttribute('style', 'display: block');
-
     this.camera = document.querySelector('a-camera');
     this.controller = new Controller(this.scene, this.camera);
-    this.blob = new Blob(this.scene, this.camera);
+    this.blobs = [];
+    this.tick = 0;
 
     // this.blob.addEventListener('child-attached', e => {
     //   console.log('child attached', e.detail.el);
@@ -20,28 +23,38 @@ export default class Game {
     //   console.log('child detached', e.detail.el);
     // });
 
-    // for (let i = 0;i < 10;i ++) {
-    //   this.scene.appendChild(this.createBlob());
-    // }
-
     this.loop();
+  }
+
+  /**
+   * Create blobs at random times
+   */
+  // TODO: blobs should spawn at random times and more quickly as the game progresses
+  addRandomBlobs() {
+    if (this.tick % 30 === 0) {
+      this.blobs.push(new Blob(this.scene, this.camera));
+    }
   }
 
   /**
    * The gameloop
    */
     loop = () => {
+      this.addRandomBlobs();
       const gamepad = navigator.getGamepads()[0];
       this.controller.initControls(gamepad);
-      this.blob.moveBlob();
-      this.blob.detectHit(gamepad.buttons[5]);
+      this.blobs.forEach(blob => blob.initBlob(gamepad.buttons[5]));
+      this.tick ++;
       requestAnimationFrame(this.loop);
     }
 
-  // disconnectedGamepad() {
-  //   console.log('oh no...');
-  //   //   const scene = document.querySelector(`.world`);
-  //   document.querySelectorAll(`.blobs`).forEach(blob => this.scene.removeChild(blob));
-  //   this.scene.setAttribute('style', 'display: none');
-  // }
+    /**
+     * Handle disconnected gamepad
+     */
+    // TODO: cancel animation frame => where to place the RAF ID ??
+    disconnectedGamepad() {
+      console.log('The connection with the controller was lost');
+      //   cancelAnimationFrame(this.raf);
+      this.scene.setAttribute('style', 'display: none');
+    }
 }
