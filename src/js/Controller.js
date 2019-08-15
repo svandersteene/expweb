@@ -78,6 +78,7 @@ export default class Controller {
   /**
    * Use the TOUCHPAD in the middle of the controller to pause the game
    */
+  // TODO: fix pause button (outside the animation frame)
   pauseGame(gamepad) {
     if (gamepad.buttons[17].pressed) {
       this.pause = !this.pause;

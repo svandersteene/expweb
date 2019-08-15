@@ -1,15 +1,16 @@
 export default class Blob {
 
-  constructor(scene, camera) {
+  constructor(scene, camera, level, accuracy, range) {
     this.scene = scene;
     this.camera = camera;
-    this.hitAccuracy = 2;
+    this.level = level;
+    this.accuracy = accuracy;
+    this.range = range;
     this.createBlob();
   }
 
-  // TODO: increase 40 over time for higher difficulty
   get randomPosition() {
-    return Math.floor((Math.random() - 0.5) * 40);
+    return Math.floor((Math.random() - 0.5) * (10 + 10 * this.level));
   }
 
   /**
@@ -25,41 +26,39 @@ export default class Blob {
     this.scene.appendChild(this.blob);
   }
 
-  /** TODO:
-   * blobs should slow down as they come closer to the player
-   * as the game progresses, the blobs should slow down LESS
-   * check accuracy of hit-detection
-   */
-
   /**
    * Makes the blob move towards the player
+   * The blob slows down as it gets closer to the player
+   * The blob slows down less as the player gets in a higher level
    */
-  initBlob(hitButton) {
-    this.blob.getAttribute('position').z += 1;
-    this.detectHit(hitButton);
-    this.detectBoundaries();
+  initBlob() {
+    this.blob.getAttribute('position').z += (1 + (- 500 - this.blob.getAttribute('position').z) / (550 + 50 * this.level));
   }
 
   /**
    * Checks if the player is close to this blob and if he's using the right button
    */
   detectHit(hitButton) {
-    this.blobPos = {x: this.blob.getAttribute('position').x, y: this.blob.getAttribute('position').y};
-    this.lowPos = {x: this.camera.getAttribute('position').x - this.hitAccuracy, y: this.camera.getAttribute('position').y - this.hitAccuracy};
-    this.highPos = {x: this.camera.getAttribute('position').x + this.hitAccuracy, y: this.camera.getAttribute('position').y + this.hitAccuracy};
+    this.blobPos = {x: this.blob.getAttribute('position').x, y: this.blob.getAttribute('position').y, z: this.blob.getAttribute('position').z};
+    this.lowPos = {x: this.camera.getAttribute('position').x - this.accuracy, y: this.camera.getAttribute('position').y - this.accuracy};
+    this.highPos = {x: this.camera.getAttribute('position').x + this.accuracy, y: this.camera.getAttribute('position').y + this.accuracy};
 
-    if (this.blobPos.x > this.lowPos.x && this.blobPos.x < this.highPos.x && this.blobPos.y > this.lowPos.y && this.blobPos.y < this.highPos.y && hitButton.pressed) {
+    if (this.blobPos.z > this.range && this.blobPos.x > this.lowPos.x && this.blobPos.x < this.highPos.x && this.blobPos.y > this.lowPos.y && this.blobPos.y < this.highPos.y && hitButton.pressed) {
       this.destroy();
+      return true;
     }
+    return false;
   }
 
   /**
    * Checks if the blob is still visible for the player, otherwise destroy it and subtract points
    */
   detectBoundaries() {
-    if (this.blob.getAttribute('position').z > 1.5) {
+    if (this.blob.getAttribute('position').z > 1) {
       this.destroy();
+      return true;
     }
+    return false;
   }
 
   /**
