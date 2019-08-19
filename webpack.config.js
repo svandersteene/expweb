@@ -7,6 +7,7 @@ const webpack = require(`webpack`);
 module.exports = (env, {mode}) => {
   console.log(mode);
   return {
+    entry: `./src/js/index.js`,
     output: {
       filename: `js/[name].[hash].js`
     },
@@ -35,7 +36,7 @@ module.exports = (env, {mode}) => {
           ]
         },
         {
-          test: /\.(jpe?g|png|svg|webp|fbx|gltf)$/,
+          test: /\.(jpe?g|png|svg|webp|gltf)$/,
           use: {
             loader: `url-loader`,
             options: {
@@ -74,7 +75,7 @@ module.exports = (env, {mode}) => {
         filename: `./index.html`
       }),
       new MiniCssExtractPlugin({
-        filename: `./src/css/style.[contenthash].css`
+        filename: `style.[contenthash].css`
       }),
       new OptimizeCssAssetsPlugin(),
       new webpack.HotModuleReplacementPlugin()

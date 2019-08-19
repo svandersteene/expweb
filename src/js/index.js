@@ -1,4 +1,4 @@
-import Game from './js/Game.js';
+import Game from './classes/Game.js';
 
 {
   console.log('initialising...');

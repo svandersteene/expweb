@@ -64,8 +64,8 @@ export default class Blob {
   /**
    * Destroys this blob object
    */
-  // TODO: fix destroy-function so it properly destroys the object
   destroy() {
     this.scene.remove(this.blob);
+    this.scene.removeChild(this.blob);
   }
 }

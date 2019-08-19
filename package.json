@@ -5,7 +5,7 @@
   "license": "MIT",
   "scripts": {
     "start": "webpack-dev-server --mode development --port 3000 --open",
-    "production": "rm -rf dist/ && NODE_ENV=production webpack -p"
+    "production": "rm -rf dist/ && webpack -p --mode production"
   },
   "devDependencies": {
     "@babel/core": "^7.5.4",
