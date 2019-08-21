@@ -66,7 +66,7 @@ export default class Game {
 
     // level checker
     // TODO: add timeout so the player can prepare for the next level
-    if (this.hitBlobs.length === this.amount * this.level) {
+    if (this.hitBlobs.length >= this.amount * this.level) {
       console.log(`you completed level ${this.level}`);
       this.resetGame(false);
       this.accuracy += 0.5;
@@ -101,7 +101,7 @@ export default class Game {
     }
     if (blob.detectBoundaries() && !this.missedBlobs.includes(blob) && !this.hitBlobs.includes(blob)) {
       this.missedBlobs.push(blob);
-      this.accuracy = Math.round((this.accuracy - (this.amount / 20)) * 100) / 100;
+      this.accuracy = Math.round((this.accuracy - (this.amount / 200)) * 100) / 100;
       this.blobs = this.blobs.filter(item => item !== blob);
     }
   }

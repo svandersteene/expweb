@@ -18,6 +18,6 @@ Since it's an experimental use case, there is no minimum required browserversion
 
 ## Technical specifications
 
-* run `yarn install` to get started
+* Run `yarn install` to get started
 * Gamepad API browser support: Edge, Chrome, Firefox, Opera, Safari 10.1+
-* the game uses AFrame, a framework based on three.js
+* The game uses AFrame, a framework based on three.js

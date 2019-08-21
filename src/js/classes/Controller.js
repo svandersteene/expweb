@@ -50,7 +50,7 @@ export default class Controller {
    * Navigate through the world with the LEFT JOYSTICK and stabilise with the L2 and R2 BUTTONS
    */
   navigate(gamepad) {
-    this.camera.setAttribute('position', `${this.moveHorizontal()} ${this.moveVertical()} 0`);
+    this.camera.setAttribute('position', `${this.xPos} ${this.yPos} 0`);
     this.camera.setAttribute('rotation', `0 0 ${this.stabilise(gamepad.buttons)}`);
     this.changeVelocity(gamepad);
   }
@@ -69,26 +69,12 @@ export default class Controller {
   /**
    * Changes the speed at which the player moves
    */
-  changeVelocity(gamepad) {
-    this.joystick = {x: gamepad.axes[0], y: gamepad.axes[1]};
-    if (this.velocity.x <= this.maxVelocity && this.velocity.x >= - this.maxVelocity) {
-      this.velocity.x = Math.round((this.velocity.x + this.joystick.x / 10 * this.sensitivity) * 100) / 100;
-    }
-    if (this.velocity.x > this.maxVelocity) {
-      this.velocity.x = this.maxVelocity;
-    }
-    if (this.velocity.x < - this.maxVelocity) {
-      this.velocity.x = - this.maxVelocity;
-    }
-    if (this.velocity.y <= this.maxVelocity && this.velocity.y >= - this.maxVelocity) {
-      this.velocity.y = Math.round((this.velocity.y + this.joystick.y / 10 * this.sensitivity) * 100) / 100;
-    }
-    if (this.velocity.y > this.maxVelocity) {
-      this.velocity.y = this.maxVelocity;
-    }
-    if (this.velocity.y < - this.maxVelocity) {
-      this.velocity.y = - this.maxVelocity;
-    }
+  changeVelocity({axes: [x, y]}) {
+    this.joystick = {x, y};
+    this.velocity = {
+      x: Math.max(- this.maxVelocity, Math.min(this.maxVelocity, Math.round((this.velocity.x + this.joystick.x / 10 * this.sensitivity) * 100) / 100)),
+      y: Math.max(- this.maxVelocity, Math.min(this.maxVelocity, Math.round((this.velocity.y + this.joystick.y / 10 * this.sensitivity) * 100) / 100))
+    };
   }
 
   /**
@@ -128,11 +114,11 @@ export default class Controller {
   /**
    * Helper functions
    */
-  moveHorizontal() {
+  get xPos() {
     return this.camera.getAttribute('position').x += this.velocity.x;
   }
 
-  moveVertical() {
+  get yPos() {
     return this.camera.getAttribute('position').y -= this.velocity.y;
   }
 }
