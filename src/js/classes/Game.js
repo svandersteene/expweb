@@ -1,3 +1,4 @@
+import gunSound from '../../assets/gun.wav';
 import Controller from './Controller.js';
 import Blob from './Blob.js';
 
@@ -5,10 +6,8 @@ import Blob from './Blob.js';
  * TODO: FEEDBACK
  * --------------
  * * adding changing gravity + make it visible
- * * add powerups
- * * fix webpack config
+ * * add powerups => what kind of powerup ??
  * * add design, make it clean
- * * add sounds
  */
 
 export default class Game {
@@ -22,6 +21,7 @@ export default class Game {
     this.scene = document.querySelector('a-scene');
     this.scene.setAttribute('style', 'display: block');
     this.camera = document.querySelector('a-camera');
+    this.hitSound = new Audio(gunSound);
     this.controller = new Controller(this.scene, this.camera);
     this.resetGame(true);
     this.amount = 10;
@@ -95,6 +95,7 @@ export default class Game {
   handleBlob(blob, hitButton) {
     blob.initBlob();
     if (blob.detectHit(hitButton) && !this.hitBlobs.includes(blob)) {
+      this.hitSound.play();
       this.hitBlobs.push(blob);
       this.score += 10 * this.level;
       this.blobs = this.blobs.filter(item => item !== blob);

@@ -9,7 +9,7 @@ module.exports = (env, {mode}) => {
   return {
     entry: `./src/js/index.js`,
     output: {
-      filename: `js/[name].[hash].js`
+      filename: `[name].[hash].js`
     },
     devServer: {
       overlay: true,
@@ -25,7 +25,7 @@ module.exports = (env, {mode}) => {
           }
         },
         {
-          test: /\.html$/,
+          test: /\.(html)$/,
           use: [
             {
               loader: `html-srcsets-loader`,
@@ -36,7 +36,7 @@ module.exports = (env, {mode}) => {
           ]
         },
         {
-          test: /\.(jpe?g|png|svg|webp|gltf)$/,
+          test: /\.(jpe?g|png|svg|webp)$/,
           use: {
             loader: `url-loader`,
             options: {
@@ -47,7 +47,16 @@ module.exports = (env, {mode}) => {
           }
         },
         {
-          test: /\.css$/,
+          test: /\.(mp3|wav)$/,
+          use: {
+            loader: `file-loader`,
+            options: {
+              name: `assets/[name].[ext]`
+            }
+          }
+        },
+        {
+          test: /\.(css)$/,
           use: [
             mode === `production`
               ? MiniCssExtractPlugin.loader

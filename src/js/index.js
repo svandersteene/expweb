@@ -1,3 +1,4 @@
+import '../css/style.css';
 import Game from './classes/Game.js';
 
 {

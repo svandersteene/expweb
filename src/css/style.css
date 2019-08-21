@@ -1,1 +1,6 @@
-@import 'reset.css'
+@import './reset.css';
+
+.button {
+  z-index: 999;
+  color: red;
+}
