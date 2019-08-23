@@ -12,13 +12,12 @@ html {
 body {
   cursor: none;
   font-family: Orbitron, sans-serif;
-  font-size: 1.6rem;
+  font-size: 2.5rem;
 }
 
 .rise {
   position: absolute;
-  z-index: 999;
-  padding: 5rem;
+  padding: 7rem;
 }
 
 .modal {
@@ -35,7 +34,7 @@ body {
 }
 
 .title {
-  font-size: 3rem;
+  font-size: 4rem;
   text-transform: uppercase;
   letter-spacing: .7rem;
   text-align: center;
@@ -44,10 +43,75 @@ body {
 
 .controls {
   width: 80%;
+  height: auto;
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+}
+
+.story img {
+  display: block;
+  width: 30vw;
+  height: auto;
+  margin: 5rem auto;
+}
+
+.story p {
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.story p:last-child {
+  text-transform: uppercase;
+  margin: 4rem 0 0;
+  text-shadow: 0 0 1.5rem #71dcfd;
+}
+
+.endstate {
+  padding: 10rem;
+  text-align: center;
+}
+
+.endstate .title {
+  font-size: 10rem;
+}
+
+.result {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: grid;
+  grid-gap: 5rem;
+  font-size: 3rem;
+}
+
+.result .level {
+  text-transform: lowercase;
+}
+
+.result .endscore {
+  font-size: 5rem;
+}
+
+.endstate > p:last-child {
+  position: absolute;
+  left: 50%;
+  bottom: 10rem;
+  transform: translateX(-50%);
+  animation: blink 1000ms infinite alternate;
+}
+
+@keyframes blink {
+
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: .1;
+  }
 }
 
 .interface {
@@ -66,12 +130,37 @@ body {
   transform: translate(-50%, -50%);
 }
 
+.scoreBoard {
+  position: absolute;
+  bottom: 10rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: grid;
+  width: 60rem;
+  grid-template: repeat(2, 1fr) / repeat(2, 1fr);
+  grid-template-areas: 'level score' 'life life';
+  grid-gap: 2rem;
+}
+
+.scoreBoard .level {
+  grid-area: level;
+}
+
+.scoreBoard .score {
+  grid-area: score;
+  text-align: right;
+}
+
 .accuracy {
-  margin: 0 auto;
-  width: 50rem;
-  height: 1vh;
+  grid-area: life;
+  width: 100%;
+  height: 2rem;
 }
 
 .show {
   display: block;
+}
+
+.hide {
+  display: none;
 }

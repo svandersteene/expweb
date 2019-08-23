@@ -1,8 +1,11 @@
-import gunSound from '../../assets/gun.wav';
 import Controller from './Controller.js';
 import Blob from './Blob.js';
-
 import Progressbar from 'progressbar.js';
+
+// Sounds
+import levelup from '../../assets/levelup.mp3';
+import gameover from '../../assets/gameover.mp3';
+import gunSound from '../../assets/gun.mp3';
 
 /**
  * TODO: FEEDBACK
@@ -16,6 +19,7 @@ export default class Game {
   constructor() {
     console.log('creating the game...');
     this.looping = true;
+    this.newHighscore = false;
     window.addEventListener('gamepaddisconnected', () => {
       this.disconnectedGamepad();
     });
@@ -25,6 +29,8 @@ export default class Game {
     this.camera = document.querySelector('a-camera');
     this.hud = document.querySelector('.hud');
     this.hitSound = new Audio(gunSound);
+    this.levelupSound = new Audio(levelup);
+    this.gameoverSound = new Audio(gameover);
     this.controller = new Controller(this.scene, this.camera, parseFloat(this.hud.getAttribute('width')), parseFloat(this.hud.getAttribute('height')));
     this.resetGame(true);
     this.amount = 10;
@@ -82,13 +88,21 @@ export default class Game {
 
     // game over checker
     if (this.accuracy < 1) {
+      this.gameoverSound.play();
+      //   if (window.localStorage.getItem('highscore') && this.score > window.localStorage.getItem('highscore')) {
+      //     this.newHighscore = true;
+      //     window.localStorage.setItem('highscore', this.score);
+      //     console.log('highscore', window.localStorage.getItem('highscore'));
+      //   }
       this.adjustInterface('end');
+      this.newHighscore = false;
       this.resetGame(true);
     }
 
     // level checker
     // TODO: add timeout so the player can prepare for the next level
     if (this.hitBlobs.length >= this.amount * this.level) {
+      this.levelupSound.play();
       this.resetGame(false);
       this.accuracy += 0.5;
       this.maxAccuracy += 0.5;
@@ -122,7 +136,7 @@ export default class Game {
       this.hitSound.play();
       this.hitBlobs.push(blob);
       this.score += 10 * this.level;
-      this.iScore.forEach(el => el.textContent = `Score: ${this.score}`);
+      this.iScore.forEach(el => el.textContent = this.score);
       this.blobs = this.blobs.filter(item => item !== blob);
     }
     if (blob.detectBoundaries() && !this.missedBlobs.includes(blob) && !this.hitBlobs.includes(blob)) {
@@ -147,14 +161,22 @@ export default class Game {
    */
   adjustInterface(state) {
     switch (state) {
+    case 'story':
+      document.querySelector('.controls').classList.add('hide');
+      document.querySelector('.story').classList.remove('hide');
+      break;
+    case 'controls':
+      document.querySelector('.controls').classList.remove('hide');
+      document.querySelector('.story').classList.add('hide');
+      break;
     case 'gameplay':
       this.resetInterfaceValues();
-      document.querySelector('#beginstate').classList.remove('show');
-      document.querySelector('#endstate').classList.remove('show');
+      document.querySelector('.beginstate').classList.remove('show');
+      document.querySelector('.endstate').classList.remove('show');
       document.querySelector('.interface').classList.add('show');
       break;
     case 'end':
-      document.querySelector('#endstate').classList.add('show');
+      document.querySelector('.endstate').classList.add('show');
       document.querySelector('.interface').classList.remove('show');
       break;
     }
@@ -164,7 +186,7 @@ export default class Game {
    * Set or reset values in HTML elements
    */
   resetInterfaceValues() {
-    this.iScore.forEach(el => el.textContent = `Score ${this.score}`);
+    this.iScore.forEach(el => el.textContent = this.score);
     this.iLevel.forEach(el => el.textContent = `Level ${this.level}`);
     this.iAccuracy.animate(1);
   }
@@ -179,6 +201,9 @@ export default class Game {
       //   if (!this.started && gamepad.buttons[3].pressed) {
       //     console.log('test button');
       //   }
+      if (!this.started && gamepad.buttons[0].pressed) {
+        this.adjustInterface('story');
+      }
 
       // check if game should be started
       if (!this.started && gamepad.buttons[17].pressed) {
