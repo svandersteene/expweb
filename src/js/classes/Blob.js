@@ -3,6 +3,7 @@ import AObject from './AObject.js';
 export default class Blob extends AObject {
   constructor(scene, camera, level, accuracy, range) {
     super(scene, camera, level, accuracy, range);
+    this.speed = 550; // 550 is standard
     this.createBlob();
   }
 
@@ -17,6 +18,6 @@ export default class Blob extends AObject {
    * Make the blob move
    */
   initBlob() {
-    super.initObject(550);
+    super.initObject(this.speed);
   }
 }

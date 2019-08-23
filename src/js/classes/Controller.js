@@ -1,11 +1,14 @@
 export default class Controller {
 
-  constructor(scene, camera) {
+  constructor(scene, camera, hudWidth, hudHeight) {
     this.scene = scene;
     this.camera = camera;
+    this.hudPosition = {x: hudWidth / 2, y: hudHeight / 2};
     this.sensitivity = 0.5;
     this.maxVelocity = 2;
     this.velocity = {x: 0, y: 0};
+    this.maxRotation = 1;
+    this.rotation = 0;
   }
 
   /**
@@ -16,13 +19,6 @@ export default class Controller {
     this.navigate(gamepad);
     this.resetController(gamepad);
     this.changeSensitivity(gamepad);
-  }
-
-  /**
-   * Check if game should be started
-   */
-  startGame(padButton) {
-    return padButton.pressed ? true : false;
   }
 
   //TODO: not quite working yet, too jiggery
@@ -51,30 +47,25 @@ export default class Controller {
    */
   navigate(gamepad) {
     this.camera.setAttribute('position', `${this.xPos} ${this.yPos} 0`);
-    this.camera.setAttribute('rotation', `0 0 ${this.stabilise(gamepad.buttons)}`);
-    this.changeVelocity(gamepad);
-  }
+    this.camera.setAttribute('rotation', `0 0 ${this.zPos}`);
+    this.changeSpeed(gamepad);
 
-  stabilise(buttons) {
-    this.position = this.camera.getAttribute('rotation').z;
-    if (buttons[6].pressed) {
-      this.position -= buttons[6].value / this.sensitivity;
-    }
-    if (buttons[7].pressed) {
-      this.position += buttons[7].value / this.sensitivity;
-    }
-    return this.position;
+    // change interface
+    document.querySelector('#hudhorizontal').setAttribute('transform', `rotate(${this.mapInput(this.velocity.x, - this.maxVelocity, this.maxVelocity, - 90, 90)}, ${this.hudPosition.x}, ${this.hudPosition.y})`);
+    document.querySelector('#cross').setAttribute('transform', `rotate(${this.zPos}, ${this.hudPosition.x}, ${this.hudPosition.y}), translate(${this.mapInput(this.velocity.x, - this.maxVelocity, this.maxVelocity, - 180, 180)}, ${this.mapInput(this.velocity.y, - this.maxVelocity, this.maxVelocity, - 180, 180)}), rotate(${- this.zPos}, ${this.hudPosition.x}, ${this.hudPosition.y})`);
+    document.querySelector('#hudrotation').setAttribute('transform', `translate(140.000000, 136.000000), rotate(${this.mapInput(this.zPos, - 180, 180, - 135, 135)}, 132, 64)`);
   }
 
   /**
-   * Changes the speed at which the player moves
+   * Changes the speed at which the player moves and rotates
    */
-  changeVelocity({axes: [x, y]}) {
-    this.joystick = {x, y};
+  changeSpeed({axes: [x, y, z]}) {
+    this.joystick = {x, y, z};
     this.velocity = {
       x: Math.max(- this.maxVelocity, Math.min(this.maxVelocity, Math.round((this.velocity.x + this.joystick.x / 10 * this.sensitivity) * 100) / 100)),
       y: Math.max(- this.maxVelocity, Math.min(this.maxVelocity, Math.round((this.velocity.y + this.joystick.y / 10 * this.sensitivity) * 100) / 100))
     };
+    this.rotation = Math.max(- this.maxRotation, Math.min(this.maxRotation, Math.round((this.rotation + this.joystick.z / 25 * this.sensitivity) * 100) / 100));
   }
 
   /**
@@ -97,7 +88,6 @@ export default class Controller {
     // reset your position in the world
     if (gamepad.buttons[4].pressed) {
       this.resetPositions();
-      this.camera.setAttribute('rotation', '0 0 0');
     }
 
     // reset the gamepad's sensitivity
@@ -108,17 +98,25 @@ export default class Controller {
 
   resetPositions() {
     this.velocity = {x: 0, y: 0};
+    this.rotation = 0;
     this.camera.setAttribute('position', '0 0 0');
+    this.camera.setAttribute('rotation', '0 0 0');
   }
 
   /**
    * Helper functions
    */
+  mapInput = (input, inLow, inHigh, outLow, outHigh) => (input - inLow) / (inHigh - inLow) * (outHigh - outLow) + outLow;
+
   get xPos() {
     return this.camera.getAttribute('position').x += this.velocity.x;
   }
 
   get yPos() {
     return this.camera.getAttribute('position').y -= this.velocity.y;
+  }
+
+  get zPos() {
+    return Math.max(- 180, Math.min(180, this.camera.getAttribute('rotation').z += this.rotation));
   }
 }

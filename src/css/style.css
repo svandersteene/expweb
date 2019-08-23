@@ -1,6 +1,77 @@
 @import './reset.css';
 
-.button {
+html {
+  font-size: 62.5%;
+  box-sizing: border-box;
+}
+
+*, *::before, *::after { /* stylelint-disable-line */
+  box-sizing: inherit;
+}
+
+body {
+  cursor: none;
+  font-family: Orbitron, sans-serif;
+  font-size: 1.6rem;
+}
+
+.rise {
+  position: absolute;
   z-index: 999;
-  color: red;
+  padding: 5rem;
+}
+
+.modal {
+  display: none;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 75vw;
+  height: 75vh;
+  background-color: rgba(0, 0, 0, .3);
+  color: white;
+  border-radius: 2rem;
+  box-shadow: 0 0 4rem rgba(0, 0, 0, .75);
+}
+
+.title {
+  font-size: 3rem;
+  text-transform: uppercase;
+  letter-spacing: .7rem;
+  text-align: center;
+  text-shadow: 0 0 1.5rem #71dcfd;
+}
+
+.controls {
+  width: 80%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.interface {
+  display: none;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  color: white;
+}
+
+.hud {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.accuracy {
+  margin: 0 auto;
+  width: 50rem;
+  height: 1vh;
+}
+
+.show {
+  display: block;
 }
