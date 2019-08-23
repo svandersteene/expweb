@@ -5,7 +5,7 @@
   "license": "MIT",
   "scripts": {
     "start": "webpack-dev-server --mode development --port 3000 --open",
-    "production": "rm -r dist/ && webpack -p --mode production",
+    "production": "webpack -p --mode production",
     "serve": "cd dist/ && python -m SimpleHTTPServer 3000"
   },
   "devDependencies": {
