@@ -14,33 +14,21 @@ export default class Controller {
   /**
    * Initialise controls when game loop started
    */
-  initControls(gamepad) {
-    // this.createVariableGravity();
+  initControls(gamepad, tick, difficulty) {
+    this.nudgeGravity(tick, difficulty);
     this.navigate(gamepad);
     this.resetController(gamepad);
     this.changeSensitivity(gamepad);
   }
 
-  //TODO: not quite working yet, too jiggery
-  /**
-   * Create a continuous variable gravity
-   */
-  // createVariableGravity() {
-  //     this.camera.setAttribute('position', `${this.randomiseX()} ${this.randomiseY()} 0`);
-  //     this.camera.setAttribute('rotation', `0 0 ${this.randomiseZ()}`);
-  //   }
-
-  //   randomiseX() {
-  //     return this.camera.getAttribute('position').x += (Math.random() - 0.5) / 5;
-  //   }
-
-  //   randomiseY() {
-  //     return this.camera.getAttribute('position').y += (Math.random() - 0.5) / 5;
-  //   }
-
-  //   randomiseZ() {
-  //     return this.camera.getAttribute('rotation').z += (Math.random() - 0.5) * 5;
-  //   }
+  nudgeGravity(tick, difficulty) {
+    this.random = Math.round((Math.random() * 30 + 120) * 100) / 100;
+    if (tick % this.random > 0 && tick % this.random < 1) {
+      this.rotation += Math.round((Math.random() - 0.5) * (difficulty * 5) / 100 * 100) / 100;
+      this.velocity.x += Math.round((Math.random() - 0.5) * (difficulty * 8) / 100 * 100) / 100;
+      this.velocity.y += Math.round((Math.random() - 0.5) * (difficulty * 8) / 100 * 100) / 100;
+    }
+  }
 
   /**
    * Navigate through the world with the LEFT JOYSTICK and stabilise with the L2 and R2 BUTTONS
@@ -55,8 +43,6 @@ export default class Controller {
     document.querySelector('#cross').setAttribute('transform', `rotate(${this.zPos}, ${this.hudPosition.x}, ${this.hudPosition.y}), translate(${this.mapInput(this.velocity.x, - this.maxVelocity, this.maxVelocity, - 180, 180)}, ${this.mapInput(this.velocity.y, - this.maxVelocity, this.maxVelocity, - 180, 180)}), rotate(${- this.zPos}, ${this.hudPosition.x}, ${this.hudPosition.y})`);
     document.querySelector('#hudrotation').setAttribute('transform', `translate(140.000000, 136.000000), rotate(${this.mapInput(this.zPos, - 180, 180, - 135, 135)}, 132, 64)`);
 
-    // logging
-    // console.log('speed - angle', this.rotation, this.zPos);
   }
 
   /**
@@ -68,7 +54,7 @@ export default class Controller {
       x: Math.max(- this.maxVelocity, Math.min(this.maxVelocity, Math.round((this.velocity.x + this.joystick.x / 10 * this.sensitivity) * 100) / 100)),
       y: Math.max(- this.maxVelocity, Math.min(this.maxVelocity, Math.round((this.velocity.y + this.joystick.y / 10 * this.sensitivity) * 100) / 100))
     };
-    this.rotation = Math.max(- this.maxRotation, Math.min(this.maxRotation, Math.round((this.rotation + this.joystick.z / 25 * this.sensitivity) * 100) / 100));
+    this.rotation = Math.max(- this.maxRotation, Math.min(this.maxRotation, Math.round((this.rotation + this.joystick.z / 75 * this.sensitivity) * 100) / 100));
   }
 
   /**

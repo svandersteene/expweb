@@ -24,6 +24,8 @@ export default class Game {
       this.disconnectedGamepad();
     });
 
+    this.difficulty = 1;
+
     // prepare scene
     this.scene = document.querySelector('a-scene');
     this.camera = document.querySelector('a-camera');
@@ -96,7 +98,7 @@ export default class Game {
    */
   gamePlay(gamepad) {
     // init game controls
-    this.controller.initControls(gamepad);
+    this.controller.initControls(gamepad, this.tick, this.difficulty);
 
     // game over checker
     if (this.accuracy < 1) {
