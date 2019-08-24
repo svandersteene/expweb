@@ -6,7 +6,8 @@
   "scripts": {
     "start": "webpack-dev-server --mode development --port 3000 --open",
     "production": "webpack -p --mode production",
-    "serve": "cd dist/ && python -m SimpleHTTPServer 3000"
+    "serve": "cd dist/ && python -m SimpleHTTPServer 3000",
+    "clean": "rm -r dist/"
   },
   "devDependencies": {
     "@babel/core": "^7.5.4",

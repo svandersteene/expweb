@@ -2,7 +2,7 @@
 
 Fly through space and shoot the meteorites coming towards you to collect points.
 Each level gets harder and harder as there are more and faster meteorites.
-And hey, don't miss any.. Because the more meteorites you miss, the less accurate your bullets get!
+And hey, don't miss any.. Because the more meteorites you miss, the less accurate your gun gets!
 
 ## Brief
 

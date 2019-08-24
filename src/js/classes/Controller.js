@@ -54,6 +54,9 @@ export default class Controller {
     document.querySelector('#hudhorizontal').setAttribute('transform', `rotate(${this.mapInput(this.velocity.x, - this.maxVelocity, this.maxVelocity, - 90, 90)}, ${this.hudPosition.x}, ${this.hudPosition.y})`);
     document.querySelector('#cross').setAttribute('transform', `rotate(${this.zPos}, ${this.hudPosition.x}, ${this.hudPosition.y}), translate(${this.mapInput(this.velocity.x, - this.maxVelocity, this.maxVelocity, - 180, 180)}, ${this.mapInput(this.velocity.y, - this.maxVelocity, this.maxVelocity, - 180, 180)}), rotate(${- this.zPos}, ${this.hudPosition.x}, ${this.hudPosition.y})`);
     document.querySelector('#hudrotation').setAttribute('transform', `translate(140.000000, 136.000000), rotate(${this.mapInput(this.zPos, - 180, 180, - 135, 135)}, 132, 64)`);
+
+    // logging
+    // console.log('speed - angle', this.rotation, this.zPos);
   }
 
   /**

@@ -19,7 +19,7 @@ export default class Game {
   constructor() {
     console.log('creating the game...');
     this.looping = true;
-    this.newHighscore = false;
+    this.handleHighscore();
     window.addEventListener('gamepaddisconnected', () => {
       this.disconnectedGamepad();
     });
@@ -36,7 +36,7 @@ export default class Game {
     this.amount = 10;
 
     // prepare interface
-    this.iScore = document.querySelectorAll('.score');
+    this.iScore = document.querySelector('.score');
     this.iLevel = document.querySelectorAll('.level');
     this.iAccuracy = new Progressbar.Line(document.querySelector('.accuracy'), {
       strokeWidth: 2,
@@ -54,6 +54,18 @@ export default class Game {
     });
 
     this.loop();
+  }
+
+  /**
+   * Handle highscore
+   */
+  handleHighscore() {
+    if (window.localStorage.getItem('highscore')) {
+      this.highscore = window.localStorage.getItem('highscore');
+    } else {
+      this.highscore = 0;
+      window.localStorage.setItem('highscore', this.highscore);
+    }
   }
 
   /**
@@ -89,18 +101,16 @@ export default class Game {
     // game over checker
     if (this.accuracy < 1) {
       this.gameoverSound.play();
-      //   if (window.localStorage.getItem('highscore') && this.score > window.localStorage.getItem('highscore')) {
-      //     this.newHighscore = true;
-      //     window.localStorage.setItem('highscore', this.score);
-      //     console.log('highscore', window.localStorage.getItem('highscore'));
-      //   }
       this.adjustInterface('end');
-      this.newHighscore = false;
+      if (this.score > this.highscore) {
+        this.highscore = this.score;
+        this.adjustInterface('highscore');
+        window.localStorage.setItem('highscore', this.score);
+      }
       this.resetGame(true);
     }
 
     // level checker
-    // TODO: add timeout so the player can prepare for the next level
     if (this.hitBlobs.length >= this.amount * this.level) {
       this.levelupSound.play();
       this.resetGame(false);
@@ -136,7 +146,7 @@ export default class Game {
       this.hitSound.play();
       this.hitBlobs.push(blob);
       this.score += 10 * this.level;
-      this.iScore.forEach(el => el.textContent = this.score);
+      this.iScore.textContent = this.score;
       this.blobs = this.blobs.filter(item => item !== blob);
     }
     if (blob.detectBoundaries() && !this.missedBlobs.includes(blob) && !this.hitBlobs.includes(blob)) {
@@ -178,6 +188,13 @@ export default class Game {
     case 'end':
       document.querySelector('.endstate').classList.add('show');
       document.querySelector('.interface').classList.remove('show');
+      document.querySelector('.endscore').textContent = `You scored ${this.score} points`;
+      document.querySelector('.highscore').classList.remove('hide');
+      document.querySelector('.highscore').textContent = `Highscore: ${this.highscore}`;
+      break;
+    case 'highscore':
+      document.querySelector('.endscore').textContent = `New highscore! You got ${this.highscore} points!`;
+      document.querySelector('.highscore').classList.add('hide');
       break;
     }
   }
@@ -186,7 +203,7 @@ export default class Game {
    * Set or reset values in HTML elements
    */
   resetInterfaceValues() {
-    this.iScore.forEach(el => el.textContent = this.score);
+    this.iScore.textContent = this.score;
     this.iLevel.forEach(el => el.textContent = `Level ${this.level}`);
     this.iAccuracy.animate(1);
   }
@@ -197,10 +214,13 @@ export default class Game {
     loop = () => {
       const gamepad = navigator.getGamepads()[0];
 
-      // return to begin state
-      //   if (!this.started && gamepad.buttons[3].pressed) {
-      //     console.log('test button');
-      //   }
+      // reset statistics
+      if (!this.started && gamepad.buttons[1].pressed && gamepad.buttons[4].pressed && gamepad.buttons[5].pressed && gamepad.buttons[13].pressed) {
+        console.log('statistics resetted');
+        window.localStorage.removeItem('highscore');
+        this.highscore = 0;
+      }
+
       if (!this.started && gamepad.buttons[0].pressed) {
         this.adjustInterface('story');
       }
