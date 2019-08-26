@@ -36,13 +36,17 @@
         </a-camera>
         <a-entity sound="src: #background; autoplay: false; loop: true; positional: false; volume: 5"></a-entity>
     </a-scene>
-    <div class="beginstate rise modal show">
+    <div class="rise modal beginstate">
         <h2 class="title">Welcome to space flight</h2>
         <img class="image controls" src="./assets/controller.png" alt="explanation of the controller controls" width="1319" height="534"/>
-        <div class="story hide">
+        <div class="story">
+            <p>Try to shoot as many blobs as possible by moving and shooting with the controller.</p>
+            <p>As you level up, your accuracy gets higher, but be wary of missing too many blobs or game over...</p>
+            <p>During gameplay you'll be able to catch some powerups to improve accuracy or get some bonus points.</p>
+            <p>May the best marksman win!</p>
         </div>
     </div>
-    <div class="endstate rise modal">
+    <div class="rise modal endstate hide">
         <h2 class="title">game over</h2>
         <div class="result">
             <p>Great game, you got to <span class="level"></span></p>
@@ -51,9 +55,9 @@
         </div>
         <p>press the big pad to restart the game</p>
     </div>
-    <div class="rise interface">
-        <p class="activated"></p>
-        <p class="temporary"></p>
+    <div class="rise interface hide">
+        <p class="activated hide"></p>
+        <p class="temporary hide"></p>
         <div class="scoreBoard">
             <p class="level"></p>
             <p class="blobs"></p>
@@ -86,13 +90,9 @@
             </g>
         </svg>
     </div>
-    <div class="rise options">
-        <span class="return"><img src="./assets//triangle.png" alt="picture of ps4 triangle button" width="64" height="64" /> to return</span>
-        <img src="./assets/story.png" alt="explanation of what to do during the game" width="1000" height="572" />
-        <p>Try to shoot as many blobs as possible by moving and shooting with the controller.</p>
-        <p>As you level up, your accuracy gets higher, but be wary of missing too many blobs or game over...</p>
-        <p>During gameplay you'll be able to catch some powerups to improve accuracy or get some bonus points.</p>
-        <p>May the best marksman win!</p>
+    <div class="rise options hide">
+        <span class="return">Press <img src="./assets//triangle.png" alt="picture of ps4 triangle button" width="64" height="64" /> to return</span>
+        <p class="construction">under construction</p>
     </div>
 </body>
 </html>

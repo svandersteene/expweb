@@ -16,28 +16,20 @@ body {
 }
 
 .rise {
-  display: none;
   position: absolute;
   padding: 7rem;
 }
 
 .modal {
-  display: none;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   width: 75vw;
-  height: 75vh;
+  height: 85vh;
   background-color: rgba(0, 0, 0, .3);
   color: white;
   border-radius: 2rem;
   box-shadow: 0 0 4rem rgba(0, 0, 0, .75);
-}
-
-.return {
-  position: fixed;
-  left: 0;
-  top: 0;
 }
 
 .options {
@@ -47,24 +39,39 @@ body {
   top: 0;
   left: 0;
   background-color: rgba(0, 0, 0, .3);
+  color: white;
 }
 
-.options img {
-  display: block;
-  width: 30vw;
-  height: auto;
-  margin: 5rem auto;
-}
-
-.options p {
-  text-align: center;
-  margin-bottom: 1.5rem;
-}
-
-.options p:last-child {
-  text-transform: uppercase;
-  margin: 4rem 0 0;
+.construction {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 8rem;
   text-shadow: 0 0 1.5rem #71dcfd;
+}
+
+.return {
+  position: fixed;
+  left: 2rem;
+  top: 2rem;
+  display: flex;
+  align-items: center;
+  font-size: 2rem;
+}
+
+.return img {
+  width: 2rem;
+  height: auto;
+  margin: 0 1rem;
+}
+
+.beginstate {
+  display: grid;
+  grid-gap: 8rem;
+  grid-template-rows: repeat(3, min-content);
+  justify-content: center;
+  align-content: center;
 }
 
 .title {
@@ -76,12 +83,22 @@ body {
 }
 
 .controls {
-  width: 80%;
+  display: block;
+  margin: 0 auto;
+  width: 70%;
   height: auto;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+}
+
+.story p {
+  font-size: 2rem;
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.story p:last-child {
+  text-transform: uppercase;
+  margin: 4rem 0 0;
+  text-shadow: 0 0 1.5rem #71dcfd;
 }
 
 .endstate {
@@ -131,7 +148,6 @@ body {
 }
 
 .activated {
-  display: none;
   position: absolute;
   top: 10rem;
   left: 50%;
@@ -141,7 +157,6 @@ body {
 }
 
 .temporary {
-  display: none;
   position: absolute;
   top: 25%;
   left: 50%;
@@ -197,10 +212,6 @@ body {
   grid-area: life;
   width: 100%;
   height: 2rem;
-}
-
-.show {
-  display: block;
 }
 
 .hide {

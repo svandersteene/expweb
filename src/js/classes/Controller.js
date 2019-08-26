@@ -31,7 +31,7 @@ export default class Controller {
   }
 
   /**
-   * Navigate through the world with the LEFT JOYSTICK and stabilise with the L2 and R2 BUTTONS
+   * Navigate through the world with the LEFT JOYSTICK and stabilise with the RIGHT JOYSTICK
    */
   navigate(gamepad) {
     this.camera.setAttribute('position', `${this.xPos} ${this.yPos} 0`);

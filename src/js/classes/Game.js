@@ -121,8 +121,8 @@ export default class Game {
     if (this.hitBlobs.length >= this.amount * this.level) {
       this.levelupSound.play();
       this.resetGame(false);
-      document.querySelector('.activated').classList.remove('show');
-      document.querySelector('.temporary').classList.remove('show');
+      document.querySelector('.activated').classList.add('hide');
+      document.querySelector('.temporary').classList.add('hide');
       this.accuracy += 0.5;
       this.maxAccuracy += 0.5;
       this.updateAccuracyBar();
@@ -209,9 +209,9 @@ export default class Game {
     }
 
     if (this.activePowerup && this.current) {
-      document.querySelector('.temporary').classList.add('show');
+      document.querySelector('.temporary').classList.remove('hide');
       document.querySelector('.temporary').textContent = `${Math.round(this.powerupDuration / 60 * 10) / 10}`;
-      this.powerupDuration > 300 ? document.querySelector('.activated').classList.add('show') : document.querySelector('.activated').classList.remove('show');
+      this.powerupDuration > 300 ? document.querySelector('.activated').classList.remove('hide') : document.querySelector('.activated').classList.add('hide');
       switch (true) {
       case (this.powerupDuration > 0 && this.current.type === 0):
         this.blobs.forEach(blob => blob.accuracy = 20);
@@ -222,7 +222,7 @@ export default class Game {
         document.querySelector('.activated').textContent = 'Extreme Score Boost Activated';
         break;
       default:
-        document.querySelector('.temporary').classList.remove('show');
+        document.querySelector('.temporary').classList.add('hide');
         this.activePowerup = false;
         if (this.current.type === 0) {
           this.blobs.forEach(blob => blob.accuracy = this.accuracy);
@@ -251,24 +251,24 @@ export default class Game {
   adjustInterface(state) {
     switch (state) {
     case 'options':
-      document.querySelector('.options').classList.add('show');
-      document.querySelector('.beginstate').classList.remove('show');
+      document.querySelector('.options').classList.remove('hide');
+      document.querySelector('.beginstate').classList.add('hide');
       break;
     case 'begin':
-      document.querySelector('.options').classList.remove('show');
-      document.querySelector('.beginstate').classList.add('show');
-      document.querySelector('.endstate').classList.remove('show');
+      document.querySelector('.options').classList.add('hide');
+      document.querySelector('.beginstate').classList.remove('hide');
+      document.querySelector('.endstate').classList.add('hide');
       break;
     case 'gameplay':
       this.resetInterfaceValues();
-      document.querySelector('.beginstate').classList.remove('show');
-      document.querySelector('.endstate').classList.remove('show');
-      document.querySelector('.interface').classList.add('show');
+      document.querySelector('.beginstate').classList.add('hide');
+      document.querySelector('.endstate').classList.add('hide');
+      document.querySelector('.interface').classList.remove('hide');
       break;
     case 'end':
       // TODO: return to homepage via boolean ??
-      document.querySelector('.endstate').classList.add('show');
-      document.querySelector('.interface').classList.remove('show');
+      document.querySelector('.endstate').classList.remove('hide');
+      document.querySelector('.interface').classList.add('hide');
       document.querySelector('.endscore').textContent = `You scored ${this.score} points`;
       document.querySelector('.highscore').classList.remove('hide');
       document.querySelector('.highscore').textContent = `Highscore: ${this.highscore}`;
@@ -279,10 +279,10 @@ export default class Game {
       break;
     case 'reset':
       this.iAccuracy.destroy();
-      document.querySelector('.beginstate').classList.add('show');
-      document.querySelector('.options').classList.remove('show');
-      document.querySelector('.endstate').classList.remove('show');
-      document.querySelector('.interface').classList.remove('show');
+      document.querySelector('.beginstate').classList.remove('hide');
+      document.querySelector('.options').classList.add('hide');
+      document.querySelector('.endstate').classList.add('hide');
+      document.querySelector('.interface').classList.add('hide');
       break;
     }
   }
@@ -305,7 +305,7 @@ export default class Game {
       const gamepad = navigator.getGamepads()[0];
 
       // reset statistics
-      if (!this.started && gamepad.buttons[1].pressed && gamepad.buttons[4].pressed && gamepad.buttons[5].pressed && gamepad.buttons[13].pressed) {
+      if (!this.started && gamepad.buttons[0].pressed && gamepad.buttons[4].pressed && gamepad.buttons[5].pressed && gamepad.buttons[13].pressed) {
         console.log('statistics resetted');
         window.localStorage.removeItem('highscore');
         this.highscore = 0;
