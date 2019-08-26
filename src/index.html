@@ -34,17 +34,12 @@
         </a-assets>
         <a-camera position="0 0 0" rotation="0 0 0">
         </a-camera>
-        <a-entity sound="src: #background; autoplay: true; loop: true; positional: false; volume: 5"></a-entity>
+        <a-entity sound="src: #background; autoplay: false; loop: true; positional: false; volume: 5"></a-entity>
     </a-scene>
     <div class="beginstate rise modal show">
         <h2 class="title">Welcome to space flight</h2>
         <img class="image controls" src="./assets/controller.png" alt="explanation of the controller controls" width="1319" height="534"/>
         <div class="story hide">
-            <img src="./assets//story.png" alt="explanation of what to do during the game" width="1000" height="572"/>
-            <p>Try to shoot as many blobs as possible by moving and shooting with the controller.</p>
-            <p>As you level up, your accuracy gets higher, but be wary of missing too many blobs or game over...</p>
-            <p>During gameplay you'll be able to catch some powerups to improve accuracy or get some bonus points.</p>
-            <p>May the best marksman win!</p>
         </div>
     </div>
     <div class="endstate rise modal">
@@ -57,8 +52,12 @@
         <p>press the big pad to restart the game</p>
     </div>
     <div class="rise interface">
+        <p class="activated"></p>
+        <p class="temporary"></p>
         <div class="scoreBoard">
             <p class="level"></p>
+            <p class="blobs"></p>
+            <p class="powerups"></p>
             <p class="score"></p>
             <div class="accuracy"></div>
         </div>
@@ -86,6 +85,14 @@
                 </g>
             </g>
         </svg>
+    </div>
+    <div class="rise options">
+        <span class="return"><img src="./assets//triangle.png" alt="picture of ps4 triangle button" width="64" height="64" /> to return</span>
+        <img src="./assets/story.png" alt="explanation of what to do during the game" width="1000" height="572" />
+        <p>Try to shoot as many blobs as possible by moving and shooting with the controller.</p>
+        <p>As you level up, your accuracy gets higher, but be wary of missing too many blobs or game over...</p>
+        <p>During gameplay you'll be able to catch some powerups to improve accuracy or get some bonus points.</p>
+        <p>May the best marksman win!</p>
     </div>
 </body>
 </html>

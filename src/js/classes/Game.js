@@ -1,24 +1,19 @@
 import Controller from './Controller.js';
 import Blob from './Blob.js';
+import Powerup from './Powerup.js';
 import Progressbar from 'progressbar.js';
 
 // Sounds
-import levelup from '../../assets/levelup.mp3';
-import gameover from '../../assets/gameover.mp3';
+import levelupSound from '../../assets/levelup.mp3';
+import gameoverSound from '../../assets/gameover.mp3';
 import gunSound from '../../assets/gun.mp3';
-
-/**
- * TODO: FEEDBACK
- * --------------
- * * adding changing gravity + make it visible
- * * add powerups => what kind of powerup ??
- * * add design, make it clean
- */
+import powerupSound from '../../assets/powerup.mp3';
 
 export default class Game {
   constructor() {
     console.log('creating the game...');
     this.looping = true;
+    this.showOptions = false;
     this.handleHighscore();
     window.addEventListener('gamepaddisconnected', () => {
       this.disconnectedGamepad();
@@ -31,14 +26,19 @@ export default class Game {
     this.camera = document.querySelector('a-camera');
     this.hud = document.querySelector('.hud');
     this.hitSound = new Audio(gunSound);
-    this.levelupSound = new Audio(levelup);
-    this.gameoverSound = new Audio(gameover);
+    this.levelupSound = new Audio(levelupSound);
+    this.gameoverSound = new Audio(gameoverSound);
+    this.powerupSound = new Audio(powerupSound);
     this.controller = new Controller(this.scene, this.camera, parseFloat(this.hud.getAttribute('width')), parseFloat(this.hud.getAttribute('height')));
-    this.resetGame(true);
     this.amount = 10;
+    this.blobsLeft = 10;
+    this.powerupDuration = 600;
+    this.resetGame(true);
 
     // prepare interface
     this.iScore = document.querySelector('.score');
+    this.iBlobs = document.querySelector('.blobs');
+    this.iPowerups = document.querySelector('.powerups');
     this.iLevel = document.querySelectorAll('.level');
     this.iAccuracy = new Progressbar.Line(document.querySelector('.accuracy'), {
       strokeWidth: 2,
@@ -85,11 +85,16 @@ export default class Game {
       this.accuracy = 2;
       this.maxAccuracy = this.accuracy;
       this.range = - 125;
-      this.missedBlobs = [];
+      this.caughtPowerups = [];
     }
     if (this.blobs) this.blobs.forEach(blob => blob.destroy());
+    if (this.powerups) this.powerups.forEach(powerup => powerup.destroy());
+    this.activePowerup = false;
+    this.powerupDuration = 600;
+    this.boost = 1;
     this.blobs = [];
     this.hitBlobs = [];
+    this.powerups = [];
     this.controller.resetPositions();
   }
 
@@ -116,10 +121,14 @@ export default class Game {
     if (this.hitBlobs.length >= this.amount * this.level) {
       this.levelupSound.play();
       this.resetGame(false);
+      document.querySelector('.activated').classList.remove('show');
+      document.querySelector('.temporary').classList.remove('show');
       this.accuracy += 0.5;
       this.maxAccuracy += 0.5;
       this.updateAccuracyBar();
       this.level ++;
+      this.blobsLeft = this.amount * this.level;
+      this.iBlobs.textContent = `${this.blobsLeft} blobs left`;
       this.iLevel.forEach(el => el.textContent = `Level ${this.level}`);
       this.range = - 100 - 25 * this.level;
     }
@@ -127,6 +136,11 @@ export default class Game {
     // starting blobs loop
     this.addRandomBlobs();
     this.blobs.forEach(blob => this.handleBlob(blob, gamepad.buttons[5]));
+
+    // starting powerups loop
+    this.addRandomPowerups();
+    this.powerups.forEach(powerup => this.handlePowerup(powerup, gamepad.buttons[5]));
+    this.handlePowerupActivation(gamepad.buttons[1]);
   }
 
   /**
@@ -140,22 +154,85 @@ export default class Game {
   }
 
   /**
-   * Handle blobsß
+   * Handle blobs
    */
   handleBlob(blob, hitButton) {
     blob.initBlob();
     if (blob.detectHit(hitButton) && !this.hitBlobs.includes(blob)) {
       this.hitSound.play();
       this.hitBlobs.push(blob);
-      this.score += 10 * this.level;
+      this.score += this.amount * this.level * this.boost;
+      this.blobsLeft --;
       this.iScore.textContent = this.score;
+      this.iBlobs.textContent = `${this.blobsLeft} blobs left`;
       this.blobs = this.blobs.filter(item => item !== blob);
     }
-    if (blob.detectBoundaries() && !this.missedBlobs.includes(blob) && !this.hitBlobs.includes(blob)) {
-      this.missedBlobs.push(blob);
+    if (blob.detectBoundaries() && !this.hitBlobs.includes(blob)) {
       this.accuracy = Math.round((this.accuracy - (this.amount / 200)) * 100) / 100;
       this.updateAccuracyBar();
       this.blobs = this.blobs.filter(item => item !== blob);
+    }
+  }
+
+  /**
+   * Create powerups at random times (less than blobs)
+   */
+  addRandomPowerups() {
+    // TODO: randomize better !!
+    this.random = Math.round((Math.random() * 30 + 480) * 100) / 100;
+    if (this.tick % this.random > 0 && this.tick % this.random < 1) {
+      this.powerups.push(new Powerup(this.scene, this.camera, this.level, this.accuracy, this.range, Math.floor(Math.random() * 2)));
+    }
+  }
+
+  /**
+   * Handle Powerups
+   */
+  handlePowerup(powerup, hitButton) {
+    powerup.initPowerup();
+    if (powerup.detectHit(hitButton) && !this.caughtPowerups.includes(powerup)) {
+      this.powerupSound.play();
+      this.caughtPowerups.push(powerup);
+      this.powerups = this.powerups.filter(item => item !== powerup);
+    }
+    if (powerup.detectBoundaries() && !this.caughtPowerups.includes(powerup)) {
+      this.powerups = this.powerups.filter(item => item !== powerup);
+    }
+  }
+
+  handlePowerupActivation(actionButton) {
+    this.iPowerups.textContent = `${this.caughtPowerups.length} powerups`;
+
+    if (!this.activePowerup && actionButton.pressed && this.caughtPowerups.length > 0) {
+      this.activePowerup = true;
+      this.current = this.caughtPowerups.shift();
+    }
+
+    if (this.activePowerup && this.current) {
+      document.querySelector('.temporary').classList.add('show');
+      document.querySelector('.temporary').textContent = `${Math.round(this.powerupDuration / 60 * 10) / 10}`;
+      this.powerupDuration > 300 ? document.querySelector('.activated').classList.add('show') : document.querySelector('.activated').classList.remove('show');
+      switch (true) {
+      case (this.powerupDuration > 0 && this.current.type === 0):
+        this.blobs.forEach(blob => blob.accuracy = 20);
+        document.querySelector('.activated').textContent = 'Extreme Accuracy Activated';
+        break;
+      case (this.powerupDuration > 0 && this.current.type === 1):
+        this.boost = 5;
+        document.querySelector('.activated').textContent = 'Extreme Score Boost Activated';
+        break;
+      default:
+        document.querySelector('.temporary').classList.remove('show');
+        this.activePowerup = false;
+        if (this.current.type === 0) {
+          this.blobs.forEach(blob => blob.accuracy = this.accuracy);
+        }
+        if (this.current.type === 1) {
+          this.boost = 1;
+        }
+        this.powerupDuration = 600;
+      }
+      this.powerupDuration --;
     }
   }
 
@@ -173,13 +250,14 @@ export default class Game {
    */
   adjustInterface(state) {
     switch (state) {
-    case 'story':
-      document.querySelector('.controls').classList.add('hide');
-      document.querySelector('.story').classList.remove('hide');
+    case 'options':
+      document.querySelector('.options').classList.add('show');
+      document.querySelector('.beginstate').classList.remove('show');
       break;
-    case 'controls':
-      document.querySelector('.controls').classList.remove('hide');
-      document.querySelector('.story').classList.add('hide');
+    case 'begin':
+      document.querySelector('.options').classList.remove('show');
+      document.querySelector('.beginstate').classList.add('show');
+      document.querySelector('.endstate').classList.remove('show');
       break;
     case 'gameplay':
       this.resetInterfaceValues();
@@ -188,6 +266,7 @@ export default class Game {
       document.querySelector('.interface').classList.add('show');
       break;
     case 'end':
+      // TODO: return to homepage via boolean ??
       document.querySelector('.endstate').classList.add('show');
       document.querySelector('.interface').classList.remove('show');
       document.querySelector('.endscore').textContent = `You scored ${this.score} points`;
@@ -198,6 +277,13 @@ export default class Game {
       document.querySelector('.endscore').textContent = `New highscore! You got ${this.highscore} points!`;
       document.querySelector('.highscore').classList.add('hide');
       break;
+    case 'reset':
+      this.iAccuracy.destroy();
+      document.querySelector('.beginstate').classList.add('show');
+      document.querySelector('.options').classList.remove('show');
+      document.querySelector('.endstate').classList.remove('show');
+      document.querySelector('.interface').classList.remove('show');
+      break;
     }
   }
 
@@ -206,6 +292,8 @@ export default class Game {
    */
   resetInterfaceValues() {
     this.iScore.textContent = this.score;
+    this.iBlobs.textContent = `${this.blobsLeft} blobs left`;
+    this.iPowerups.textContent = `${this.caughtPowerups.length} powerups`;
     this.iLevel.forEach(el => el.textContent = `Level ${this.level}`);
     this.iAccuracy.animate(1);
   }
@@ -223,12 +311,19 @@ export default class Game {
         this.highscore = 0;
       }
 
-      if (!this.started && gamepad.buttons[0].pressed) {
-        this.adjustInterface('story');
+      // show options page
+      if (!this.started && gamepad.buttons[9].pressed) {
+        this.showOptions = true;
+        this.adjustInterface('options');
+      }
+
+      if (this.showOptions && gamepad.buttons[3].pressed) {
+        this.showOptions = false;
+        this.adjustInterface('begin');
       }
 
       // check if game should be started
-      if (!this.started && gamepad.buttons[17].pressed) {
+      if (!this.started && !this.showOptions && gamepad.buttons[17].pressed) {
         this.adjustInterface('gameplay');
         this.started = true;
       }
@@ -250,8 +345,8 @@ export default class Game {
      */
     disconnectedGamepad() {
       console.log('The connection with the controller was lost');
-      this.looping = false;
+      this.adjustInterface('reset');
       this.resetGame(true);
-      this.scene.setAttribute('style', 'display: none');
+      this.looping = false;
     }
 }

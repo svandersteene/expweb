@@ -42,7 +42,6 @@ export default class Controller {
     document.querySelector('#hudhorizontal').setAttribute('transform', `rotate(${this.mapInput(this.velocity.x, - this.maxVelocity, this.maxVelocity, - 90, 90)}, ${this.hudPosition.x}, ${this.hudPosition.y})`);
     document.querySelector('#cross').setAttribute('transform', `rotate(${this.zPos}, ${this.hudPosition.x}, ${this.hudPosition.y}), translate(${this.mapInput(this.velocity.x, - this.maxVelocity, this.maxVelocity, - 180, 180)}, ${this.mapInput(this.velocity.y, - this.maxVelocity, this.maxVelocity, - 180, 180)}), rotate(${- this.zPos}, ${this.hudPosition.x}, ${this.hudPosition.y})`);
     document.querySelector('#hudrotation').setAttribute('transform', `translate(140.000000, 136.000000), rotate(${this.mapInput(this.zPos, - 180, 180, - 135, 135)}, 132, 64)`);
-
   }
 
   /**
@@ -54,7 +53,7 @@ export default class Controller {
       x: Math.max(- this.maxVelocity, Math.min(this.maxVelocity, Math.round((this.velocity.x + this.joystick.x / 10 * this.sensitivity) * 100) / 100)),
       y: Math.max(- this.maxVelocity, Math.min(this.maxVelocity, Math.round((this.velocity.y + this.joystick.y / 10 * this.sensitivity) * 100) / 100))
     };
-    this.rotation = Math.max(- this.maxRotation, Math.min(this.maxRotation, Math.round((this.rotation + this.joystick.z / 75 * this.sensitivity) * 100) / 100));
+    this.rotation = Math.max(- this.maxRotation, Math.min(this.maxRotation, Math.round((this.rotation + this.joystick.z / 100) * 100) / 100));
   }
 
   /**
@@ -62,10 +61,10 @@ export default class Controller {
    */
   changeSensitivity(gamepad) {
     if (this.sensitivity < 1 && gamepad.buttons[12].pressed) {
-      this.sensitivity = parseFloat((this.sensitivity += 0.1).toFixed(1));
+      this.sensitivity = parseFloat((this.sensitivity += 0.01).toFixed(2));
     }
     if (this.sensitivity > 0.1 && gamepad.buttons[13].pressed) {
-      this.sensitivity = parseFloat((this.sensitivity -= 0.1).toFixed(1));
+      this.sensitivity = parseFloat((this.sensitivity -= 0.01).toFixed(2));
     }
   }
 

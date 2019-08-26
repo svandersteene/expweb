@@ -16,6 +16,7 @@ body {
 }
 
 .rise {
+  display: none;
   position: absolute;
   padding: 7rem;
 }
@@ -33,6 +34,39 @@ body {
   box-shadow: 0 0 4rem rgba(0, 0, 0, .75);
 }
 
+.return {
+  position: fixed;
+  left: 0;
+  top: 0;
+}
+
+.options {
+  z-index: 999;
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, .3);
+}
+
+.options img {
+  display: block;
+  width: 30vw;
+  height: auto;
+  margin: 5rem auto;
+}
+
+.options p {
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.options p:last-child {
+  text-transform: uppercase;
+  margin: 4rem 0 0;
+  text-shadow: 0 0 1.5rem #71dcfd;
+}
+
 .title {
   font-size: 4rem;
   text-transform: uppercase;
@@ -48,24 +82,6 @@ body {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-}
-
-.story img {
-  display: block;
-  width: 30vw;
-  height: auto;
-  margin: 5rem auto;
-}
-
-.story p {
-  text-align: center;
-  margin-bottom: 1.5rem;
-}
-
-.story p:last-child {
-  text-transform: uppercase;
-  margin: 4rem 0 0;
-  text-shadow: 0 0 1.5rem #71dcfd;
 }
 
 .endstate {
@@ -114,8 +130,25 @@ body {
   }
 }
 
-.interface {
+.activated {
   display: none;
+  position: absolute;
+  top: 10rem;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 5rem;
+  text-shadow: 0 0 1.5rem #71dcfd;
+}
+
+.temporary {
+  display: none;
+  position: absolute;
+  top: 25%;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.interface {
   top: 0;
   left: 0;
   width: 100vw;
@@ -137,13 +170,22 @@ body {
   transform: translateX(-50%);
   display: grid;
   width: 60rem;
-  grid-template: repeat(2, 1fr) / repeat(2, 1fr);
-  grid-template-areas: 'level score' 'life life';
+  grid-template: repeat(3, 1fr) / repeat(2, 1fr);
+  grid-template-areas: 'level score' 'life life' 'powerups blobs';
   grid-gap: 2rem;
 }
 
 .scoreBoard .level {
   grid-area: level;
+}
+
+.scoreBoard .powerups {
+  grid-area: powerups;
+}
+
+.scoreBoard .blobs {
+  grid-area: blobs;
+  text-align: right;
 }
 
 .scoreBoard .score {

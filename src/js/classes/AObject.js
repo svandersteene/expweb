@@ -16,8 +16,8 @@ export default class AObject {
    */
   createObject(color) {
     this.object = document.createElement('a-entity');
-    this.object.setAttribute('geometry', 'primitive: octahedron');
-    this.object.setAttribute('material', `color: ${color}; radius: 1`);
+    this.object.setAttribute('geometry', 'primitive: octahedron; radius: 1');
+    this.object.setAttribute('material', `color: ${color}`);
     this.object.setAttribute('position', {x: this.randomPosition, y: this.randomPosition, z: - 500});
     this.object.setAttribute('rotation', '0 0 0');
     this.object.setAttribute('animation', 'property: rotation; to: 360 360 360; loop: true; dur: 3000; easing: linear');
