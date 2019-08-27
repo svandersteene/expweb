@@ -22,11 +22,4 @@ export default class Powerup extends AObject {
   initPowerup() {
     super.initObject(this.speed);
   }
-
-  /**
-   * Handle powerup activation
-   */
-//   startPowerup(type) {
-//     console.log(type);
-//   }
 }
