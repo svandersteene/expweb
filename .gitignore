@@ -23,7 +23,6 @@ coverage
 .cache/
 public
 dist
-src/electron
 
 #editor setting
 .vscode

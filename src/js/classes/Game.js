@@ -14,6 +14,7 @@ export default class Game {
     console.log('creating the game...');
     this.looping = true;
     this.showOptions = false;
+    this.showBegin = false;
     this.handleHighscore();
     window.addEventListener('gamepaddisconnected', () => {
       this.disconnectedGamepad();
@@ -251,6 +252,7 @@ export default class Game {
   adjustInterface(state) {
     switch (state) {
     case 'options':
+      this.showOptions = true;
       document.querySelector('.options').classList.remove('hide');
       document.querySelector('.beginstate').classList.add('hide');
       break;
@@ -266,7 +268,7 @@ export default class Game {
       document.querySelector('.interface').classList.remove('hide');
       break;
     case 'end':
-      // TODO: return to homepage via boolean ??
+      this.showBegin = true;
       document.querySelector('.endstate').classList.remove('hide');
       document.querySelector('.interface').classList.add('hide');
       document.querySelector('.endscore').textContent = `You scored ${this.score} points`;
@@ -313,12 +315,12 @@ export default class Game {
 
       // show options page
       if (!this.started && gamepad.buttons[9].pressed) {
-        this.showOptions = true;
         this.adjustInterface('options');
       }
 
-      if (this.showOptions && gamepad.buttons[3].pressed) {
+      if (this.showOptions && gamepad.buttons[3].pressed || this.showBegin && gamepad.buttons[3].pressed) {
         this.showOptions = false;
+        this.showBegin = false;
         this.adjustInterface('begin');
       }
 

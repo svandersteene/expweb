@@ -50,6 +50,6 @@
     "progressbar.js": "^1.0.1"
   },
   "browserslist": [
-      "defaults"
+    "defaults"
   ]
 }

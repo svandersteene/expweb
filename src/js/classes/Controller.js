@@ -4,7 +4,7 @@ export default class Controller {
     this.scene = scene;
     this.camera = camera;
     this.hudPosition = {x: hudWidth / 2, y: hudHeight / 2};
-    this.sensitivity = 0.5;
+    this.sensitivity = 0.35;
     this.maxVelocity = 2;
     this.velocity = {x: 0, y: 0};
     this.maxRotation = 1;
@@ -80,7 +80,7 @@ export default class Controller {
 
     // reset the gamepad's sensitivity
     if (gamepad.buttons[3].pressed) {
-      this.sensitivity = 0.5;
+      this.sensitivity = 0.35;
     }
   }
 

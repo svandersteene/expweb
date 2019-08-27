@@ -27,7 +27,6 @@
     <a-scene class="scene"
         background="color: #292D3E"
         vr-mode-ui="enabled: false"
-        inspector="http://cdn.jsdelivr.net/gh/aframevr/aframe-inspector@master/dist/aframe-inspector.min.js"
     >
         <a-assets>
             <audio id="background" src="./assets/background.mp3" preload="auto"></audio>
@@ -47,6 +46,8 @@
         </div>
     </div>
     <div class="rise modal endstate hide">
+        <span class="return returnBegin">Press <img src="./assets/triangle.png" alt="picture of ps4 triangle button" width="64"
+            height="64" /> to return</span>
         <h2 class="title">game over</h2>
         <div class="result">
             <p>Great game, you got to <span class="level"></span></p>
@@ -91,7 +92,7 @@
         </svg>
     </div>
     <div class="rise options hide">
-        <span class="return">Press <img src="./assets//triangle.png" alt="picture of ps4 triangle button" width="64" height="64" /> to return</span>
+        <span class="return">Press <img src="./assets/triangle.png" alt="picture of ps4 triangle button" width="64" height="64" /> to return</span>
         <p class="construction">under construction</p>
     </div>
     <div class="rise options prompt hide">

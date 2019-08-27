@@ -77,6 +77,11 @@ body {
   margin: 0 1rem;
 }
 
+.returnBegin {
+  top: -5vh;
+  left: -11vw;
+}
+
 .beginstate {
   display: grid;
   grid-gap: 8rem;
