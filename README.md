@@ -4,6 +4,8 @@ Fly through space and shoot the meteorites coming towards you to collect points.
 Each level gets harder and harder as there are more and faster meteorites.
 And hey, don't miss any.. Because the more meteorites you miss, the less accurate your gun gets!
 
+For now, the game only runs correctly on Google Chrome due to differences in the mapping of the controller buttons.
+
 ## Brief
 
 Create a web application using a known technology (WebGL, **three.js**, WebSocket, WebRTC) in combination with a unknown technology from the list underneath.
@@ -19,5 +21,5 @@ Since it's an experimental use case, there is no minimum required browserversion
 ## Technical specifications
 
 * Run `yarn install` to get started
-* Gamepad API browser support: Edge, Chrome, Firefox, Opera, Safari 10.1+
+* Gamepad API browser support: Edge, Google Chrome, Firefox, Opera, Safari 10.1+
 * The game uses AFrame, a framework based on three.js

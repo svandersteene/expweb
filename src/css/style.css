@@ -33,13 +33,24 @@ body {
 }
 
 .options {
-  z-index: 999;
   width: 100vw;
   height: 100vh;
   top: 0;
   left: 0;
   background-color: rgba(0, 0, 0, .3);
   color: white;
+}
+
+.prompt p {
+  position: absolute;
+  width: 80%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 5rem;
+  line-height: 1.5;
+  text-align: center;
+  text-shadow: 0 0 1.5rem #71dcfd;
 }
 
 .construction {

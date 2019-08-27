@@ -3,8 +3,13 @@ import Game from './classes/Game.js';
 
 {
   console.log('initialising...');
-  window.addEventListener('gamepadconnected', ({gamepad}) => {
-    console.log(`${gamepad.id} is connected, ready to play`);
-    new Game();
-  });
+  if (window.confirm('Are you on Google Chrome and do you have a PS4 controller in hand?')) {
+    window.addEventListener('gamepadconnected', ({gamepad}) => {
+      console.log(`${gamepad.id} is connected, ready to play`);
+      new Game();
+    });
+  } else {
+    document.querySelector('.beginstate').classList.add('hide');
+    document.querySelector('.prompt').classList.remove('hide');
+  }
 }
