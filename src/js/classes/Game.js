@@ -179,7 +179,6 @@ export default class Game {
    * Create powerups at random times (less than blobs)
    */
   addRandomPowerups() {
-    // TODO: randomize better !!
     this.random = Math.round((Math.random() * 30 + 480) * 100) / 100;
     if (this.tick % this.random > 0 && this.tick % this.random < 1) {
       this.powerups.push(new Powerup(this.scene, this.camera, this.level, this.accuracy, this.range, Math.floor(Math.random() * 2)));
